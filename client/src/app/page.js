@@ -12,6 +12,7 @@ import { useState, useEffect, useMemo } from "react";
 import { getCryptoPrice } from "@/utils/getCryptoPrice";
 import { ethers } from "ethers";
 import {
+  bridgeTokenFrom1To2,
   getChainName,
   getEthBalance,
   getRpcUrl,
@@ -294,12 +295,21 @@ export default function Home() {
 
       try {
         for (let i = 0; i < recipentDetailsList.length; i++) {
-          await sendMultiEth(
-            walletAddress.address,
-            recipentDetailsList[i].address,
-            amountToSendList[i]
-          );
+          if (TokenDetails.symbol === "ETH") {
+            await sendMultiEth(
+              walletAddress.address,
+              recipentDetailsList[i].address,
+              amountToSendList[i]
+            );
+          } else {
+            await bridgeTokenFrom1To2(
+              walletAddress.address,
+              amountToSendList[i],
+              "0x69C34FC75d7445129562B98540bc60B0Dc7D8849"
+            );
+          }
         }
+
         setTransferSuccess(true);
       } catch (error) {
         console.error("Transaction failed:", error);
