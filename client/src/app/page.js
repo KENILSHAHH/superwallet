@@ -11,7 +11,12 @@ import TransferingPage from "@/components/TransferingPage";
 import { useState, useEffect, useMemo } from "react";
 import { getCryptoPrice } from "@/utils/getCryptoPrice";
 import { ethers } from "ethers";
-import { getChainName, getEthBalance, getRpcUrl } from "@/utils/superWallet";
+import {
+  getChainName,
+  getEthBalance,
+  getRpcUrl,
+  getTokenBalance,
+} from "@/utils/superWallet";
 import { getWalletTokens } from "@/utils/getTokenList";
 import BridgeToken from "@/components/Bridge";
 import { sendMultiEth } from "@/utils/superWallet";
@@ -36,14 +41,6 @@ export default function Home() {
         balance: 0,
         price: 1,
         image: "/assets/image/usdc.png",
-        chains: [],
-      },
-      {
-        name: "DAI",
-        symbol: "DAI",
-        balance: 0,
-        price: 1,
-        image: "/assets/image/dai.png",
         chains: [],
       },
     ],
@@ -110,10 +107,12 @@ export default function Home() {
     try {
       const chainIdsToCheck = [420120000, 420120001];
       const provider = new ethers.BrowserProvider(window.ethereum);
+      const usdcAddress = "0x69C34FC75d7445129562B98540bc60B0Dc7D8849";
 
-      let updatedChains = [];
-      let totalBalance = 0;
-      let allTokens = [];
+      let ethChains = [];
+      let usdcChains = [];
+      let totalEthBalance = 0;
+      let totalUsdcBalance = 0;
 
       for (const chainId of chainIdsToCheck) {
         const rpcUrl = await getRpcUrl(chainId);
@@ -122,41 +121,53 @@ export default function Home() {
           continue;
         }
 
+        // Fetch ETH balance
         const ethBalance = await getEthBalance(rpcUrl, walletAddress);
-        const balanceFloat = parseFloat(ethBalance);
+        const ethBalanceFloat = parseFloat(ethBalance);
+        totalEthBalance += ethBalanceFloat;
 
-        let chainTokens = await getWalletTokens(
+        // Fetch USDC balance
+        const usdcBalance = await getTokenBalance(
+          rpcUrl,
           walletAddress,
-          chainId,
-          provider
+          usdcAddress
         );
-        allTokens.push(...chainTokens);
+        const usdcBalanceFloat = parseFloat(usdcBalance);
+        totalUsdcBalance += usdcBalanceFloat;
 
-        if (balanceFloat > 0 || chainTokens.length > 0) {
-          updatedChains.push({
-            name: getChainName(chainId),
+        // Get chain name properly
+        const chainName = await getChainName(chainId);
+
+        if (ethBalanceFloat > 0) {
+          ethChains.push({
+            name: chainName,
             chainId,
-            balance: balanceFloat,
-            tokens: chainTokens,
+            balance: ethBalanceFloat,
             image: `/assets/image/${chainId}.png`,
           });
-          totalBalance += balanceFloat;
+        }
+
+        if (usdcBalanceFloat > 0 || ethBalanceFloat > 0) {
+          usdcChains.push({
+            name: chainName,
+            chainId,
+            balance: usdcBalanceFloat,
+            image: `/assets/image/${chainId}.png`,
+          });
         }
       }
 
       setAccountDetails((prev) => ({
         ...prev,
         walletAddress,
-        token: [
-          ...prev.token.map((token) =>
-            token.symbol === "ETH"
-              ? { ...token, balance: totalBalance, chains: updatedChains }
-              : token
-          ),
-          ...allTokens.filter(
-            (token) => !prev.token.some((t) => t.symbol === token.symbol)
-          ),
-        ],
+        token: prev.token.map((token) => {
+          if (token.symbol === "ETH") {
+            return { ...token, balance: totalEthBalance, chains: ethChains };
+          } else if (token.symbol === "USDC") {
+            return { ...token, balance: totalUsdcBalance, chains: usdcChains };
+          }
+          return token;
+        }),
       }));
     } catch (error) {
       console.error("Error updating account details:", error);
@@ -280,7 +291,6 @@ export default function Home() {
       }));
     } else if (step === 5) {
       setIsTransferring(true);
-
 
       try {
         for (let i = 0; i < recipentDetailsList.length; i++) {
