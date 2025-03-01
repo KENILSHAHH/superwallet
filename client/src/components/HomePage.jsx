@@ -1,5 +1,5 @@
 "use client";
-import React, { use, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { formatAmount } from "@/utils/formatAmount";
 import { shortenAddress } from "@/utils/shortenAddress";
 
@@ -12,6 +12,8 @@ const HomePage = ({
   handleNext,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const walletAddress = accountDetails?.walletAddress?.address;
 
   const ethReturns = (
     (parseFloat(ethPrices.todayPrice.replace(/,/g, "")) -
@@ -30,6 +32,24 @@ const HomePage = ({
     ),
     2
   );
+
+  const [chainId, setChainId] = useState("");
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("preferedChain") || "[]");
+    const found = stored.find((item) => item[walletAddress]);
+    setChainId(found ? found[walletAddress] : "420120000");
+  }, [walletAddress]);
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem("preferedChain") || "[]");
+    const updated = stored.some((item) => item[walletAddress])
+      ? stored.map((item) =>
+          item[walletAddress] ? { [walletAddress]: chainId } : item
+        )
+      : [...stored, { [walletAddress]: chainId }];
+    localStorage.setItem("preferedChain", JSON.stringify(updated));
+  }, [chainId, walletAddress]);
 
   return (
     <div className="relative">
@@ -173,7 +193,19 @@ const HomePage = ({
             </svg>
           </div>
         </div>
+        <div className="flex rounded-[20px] p-[20px] bg-[#f4f4f4] gap-x-[10px] items-center justify-between">
+          <p className="font-[600]">Recieve Tokens in preferred chains</p>
+          <select
+            className="bg-white px-[10px] py-[5px] rounded-[10px] border border-gray-300"
+            value={chainId}
+            onChange={(e) => setChainId(e.target.value)}
+          >
+            <option value="420120000">Interop Alpha 0</option>
+            <option value="420120001">Interop Alpha 1</option>
+          </select>
+        </div>
       </div>
+
       <div className="flex my-[20px] w-full">
         <span className="w-full border-t border-gray-300" />
       </div>
