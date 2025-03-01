@@ -261,7 +261,7 @@ export default function Home() {
     fetchEthPrices();
   }, []);
 
-  const handleNext = (index, details, amountToSend) => {
+  const handleNext = async (index, details, amountToSend) => {
     if (step === 1) {
       const token = {
         ...accountDetails.token[index],
@@ -278,19 +278,25 @@ export default function Home() {
         ...prev,
         balance: prev.balance - amountToSend,
       }));
-      console.log("hmm", accountDetails);
     } else if (step === 5) {
       setIsTransferring(true);
-      // sleep for 2 seconds
-      setTimeout(() => {
-        setIsTransferring(false);
+
+
+      try {
+        for (let i = 0; i < recipentDetailsList.length; i++) {
+          await sendMultiEth(
+            walletAddress.address,
+            recipentDetailsList[i].address,
+            amountToSendList[i]
+          );
+        }
         setTransferSuccess(true);
-      }, 2000);
-
-      // multichain transfer
-      // recipentDetailsList[{address1, avatar1, name1}, {address2, avatar2, name2}]
-      // amountToSendList{"amount1", "amount2"}
-
+      } catch (error) {
+        console.error("Transaction failed:", error);
+        setTransferSuccess(false);
+      } finally {
+        setIsTransferring(false);
+      }
     }
 
     setStep(step + 1);
