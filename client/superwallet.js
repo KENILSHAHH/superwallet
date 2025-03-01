@@ -1,7 +1,7 @@
 /** @format */
 
 import { ethers } from 'ethers';
-
+import { get } from 'node:https';
 
 const alpha1rpc = 'https://interop-alpha-0.optimism.io';
 const alpha2rpc = 'https://interop-alpha-1.optimism.io';
@@ -39,7 +39,7 @@ async function getTokenBalance(rpc, walletAddress, tokenAddress) {
   const tokenContract = new ethers.Contract(tokenAddress, abi, provider);
 
   const balance = ethers
-    .formatUnits(await tokenContract.balanceOf(userAddress), 18)
+    .formatUnits(await tokenContract.balanceOf(walletAddress), 18)
     .slice(0, 7);
   console.log(`Balance: ${balance}`); // Adjust decimals if needed
 }

@@ -1,8 +1,16 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import { formatAmount } from "@/utils/formatAmount";
+import { shortenAddress } from "@/utils/shortenAddress";
 
-const HomePage = ({ accountDetails, ethPrices, tokenPrices, handleNext }) => {
+const HomePage = ({
+  setIsSwap,
+  disconnectWallet,
+  accountDetails,
+  ethPrices,
+  tokenPrices,
+  handleNext,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const ethReturns = (
@@ -67,10 +75,10 @@ const HomePage = ({ accountDetails, ethPrices, tokenPrices, handleNext }) => {
               src="/assets/image/profile.png"
             />
             <h1 className="font-[600] text-[22px] text-[#17161a]">
-              Superchain wallet
+              {shortenAddress(accountDetails?.walletAddress?.address)}
             </h1>
           </div>
-          <span className="hover:bg-gray-200 p-[10px] rounded-full cursor-pointer transition-all duration-300">
+          {/* <span className="hover:bg-gray-200 p-[10px] rounded-full cursor-pointer transition-all duration-300">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -85,7 +93,14 @@ const HomePage = ({ accountDetails, ethPrices, tokenPrices, handleNext }) => {
                 d="M19 9l-7 7-7-7"
               />
             </svg>
-          </span>
+          </span> */}
+
+          <button
+            className="hover:bg-red-600 bg-red-500 text-white p-[5px] px-[10px] rounded-full cursor-pointer transition-all duration-300"
+            onClick={disconnectWallet}
+          >
+            Disconnect
+          </button>
         </div>
         <div className="flex flex-col bg-[#f4f4f4] p-[15px] rounded-[20px]">
           <h1 className="font-[600] text-[32px]">${totalValue}</h1>
@@ -137,7 +152,10 @@ const HomePage = ({ accountDetails, ethPrices, tokenPrices, handleNext }) => {
               />
             </svg>
           </div>
-          <div className="flex w-full justify-between items-center rounded-[20px] bg-[#f4f4f4] p-[20px] hover:bg-[#ebebeb] cursor-pointer transition-all duration-300">
+          <div
+            className="flex w-full justify-between items-center rounded-[20px] bg-[#f4f4f4] p-[20px] hover:bg-[#ebebeb] cursor-pointer transition-all duration-300"
+            onClick={() => setIsSwap(true)}
+          >
             <h1 className="font-[500] text-[18px]">Swap</h1>
             <svg
               xmlns="http://www.w3.org/2000/svg"

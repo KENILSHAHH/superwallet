@@ -2,7 +2,6 @@ import { formatAmount } from "@/utils/formatAmount";
 import React from "react";
 
 const TokenDetails = ({ tokenDetails, handleNext, handleBack }) => {
-  console.log(tokenDetails);
 
   return (
     <div>
@@ -144,7 +143,7 @@ const TokenDetails = ({ tokenDetails, handleNext, handleBack }) => {
                     {/* Badge */}
                     <span className="bg-white p-[2px] absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 rounded-full">
                       <span className="bg-white rounded-full flex items-center w-[20px] h-[20px] justify-center">
-                        <img src={chain.image} />
+                        <img className="w-[100%] rounded-full" src={chain.image} />
                       </span>
                     </span>
                   </div>
