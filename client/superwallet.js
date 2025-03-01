@@ -121,3 +121,6 @@ async function sendToMultipleAddresses( toAddressesArray, amounts) {
 
 }
 
+
+async
+

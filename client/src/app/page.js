@@ -1,45 +1,47 @@
-"use client";
+/** @format */
 
-import HomePage from "@/components/HomePage";
-import RecipientAddress from "@/components/RecipientAddress";
-import Review from "@/components/Review";
-import SendAmount from "@/components/SendAmount";
-import TokenDetails from "@/components/TokenDetails";
-import TransferingPage from "@/components/TransferingPage";
-import { useState, useEffect, useMemo } from "react";
-import { getCryptoPrice } from "@/utils/getCryptoPrice";
-import { ethers } from "ethers";
-import { getChainName, getEthBalance, getRpcUrl } from "@/utils/superwallet";
-import { getWalletTokens } from "@/utils/getTokenList";
-import BridgeToken from "@/components/Bridge";
-import { sendMultiEth } from "@/utils/superwallet";
+'use client';
+
+import HomePage from '@/components/HomePage';
+import RecipientAddress from '@/components/RecipientAddress';
+import Review from '@/components/Review';
+import SendAmount from '@/components/SendAmount';
+import TokenDetails from '@/components/TokenDetails';
+import TransferingPage from '@/components/TransferingPage';
+import { useState, useEffect, useMemo } from 'react';
+import { getCryptoPrice } from '@/utils/getCryptoPrice';
+import { ethers } from 'ethers';
+import { getChainName, getEthBalance, getRpcUrl } from '@/utils/superWallet';
+import { getWalletTokens } from '@/utils/getTokenList';
+import BridgeToken from '@/components/Bridge';
+import { sendMultiEth } from '@/utils/superWallet';
 
 export default function Home() {
   const [accountDetails, setAccountDetails] = useState({
-    walletAddress: "", // ✅ Initially empty, updates when wallet connects
+    walletAddress: '', // ✅ Initially empty, updates when wallet connects
     token: [
       {
-        name: "Ethereum",
-        symbol: "ETH",
+        name: 'Ethereum',
+        symbol: 'ETH',
         balance: 0, // ✅ Total balance across all chains
         price: null,
-        image: "/assets/image/eth.png",
+        image: '/assets/image/eth.png',
         chains: [], // ✅ Chains will be dynamically updated
       },
       {
-        name: "USDC",
-        symbol: "USDC",
+        name: 'USDC',
+        symbol: 'USDC',
         balance: 0,
         price: 1,
-        image: "/assets/image/usdc.png",
+        image: '/assets/image/usdc.png',
         chains: [],
       },
       {
-        name: "DAI",
-        symbol: "DAI",
+        name: 'DAI',
+        symbol: 'DAI',
         balance: 0,
         price: 1,
-        image: "/assets/image/dai.png",
+        image: '/assets/image/dai.png',
         chains: [],
       },
     ],
@@ -51,22 +53,22 @@ export default function Home() {
   const [amountToSend, setAmountToSend] = useState(0);
   const [recipentDetails, setRecipientDetails] = useState(null);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddress, setWalletAddress] = useState('');
   const [isSwap, setIsSwap] = useState(false);
 
   const [tokens, setTokens] = useState([]);
   const [provider, setProvider] = useState(null);
 
   const tokenList = [
-    { symbol: "USDT", address: "0xdAC17F958D2ee523a2206206994597C13D831ec7" }, // USDT
-    { symbol: "DAI", address: "0x6B175474E89094C44Da98b954EedeAC495271d0F" }, // DAI
-    { symbol: "USDC", address: "0xA0b86991c6218b36c1d19D4a2e9eb0cE3606eB48" }, // USDC
+    { symbol: 'USDT', address: '0xdAC17F958D2ee523a2206206994597C13D831ec7' }, // USDT
+    { symbol: 'DAI', address: '0x6B175474E89094C44Da98b954EedeAC495271d0F' }, // DAI
+    { symbol: 'USDC', address: '0xA0b86991c6218b36c1d19D4a2e9eb0cE3606eB48' }, // USDC
   ];
 
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
-        alert("MetaMask is not installed. Please install it to continue.");
+        alert('MetaMask is not installed. Please install it to continue.');
         return;
       }
 
@@ -82,15 +84,15 @@ export default function Home() {
       // ✅ Call the function to update account details
       updateAccountDetails(address, chainId);
     } catch (error) {
-      console.error("Wallet connection failed:", error);
+      console.error('Wallet connection failed:', error);
     }
   };
 
   const disconnectWallet = () => {
-    setWalletAddress("");
+    setWalletAddress('');
     setIsWalletConnected(false);
     setAccountDetails({
-      walletAddress: "",
+      walletAddress: '',
       token: accountDetails.token.map((token) => ({
         ...token,
         balance: 0,
@@ -142,7 +144,7 @@ export default function Home() {
         walletAddress,
         token: [
           ...prev.token.map((token) =>
-            token.symbol === "ETH"
+            token.symbol === 'ETH'
               ? { ...token, balance: totalBalance, chains: updatedChains }
               : token
           ),
@@ -152,17 +154,17 @@ export default function Home() {
         ],
       }));
     } catch (error) {
-      console.error("Error updating account details:", error);
+      console.error('Error updating account details:', error);
     }
   };
 
   const sendTokens = async (token, recipient, amount) => {
     await sendMultiEth(
-      "0xdb5D6E7FCb63eF163Dd453962f3f1bFa52621108",
-      "0x64Ab79D6aBFcBd9B316d0b987638871D08B24315",
-      "1.0"
+      '0xdb5D6E7FCb63eF163Dd453962f3f1bFa52621108',
+      '0x64Ab79D6aBFcBd9B316d0b987638871D08B24315',
+      '1.0'
     );
-    console.log("Tokens sent successfully!");
+    console.log('Tokens sent successfully!');
   };
 
   useEffect(() => {
@@ -178,13 +180,13 @@ export default function Home() {
           setAccountDetails((prev) => ({
             ...prev,
             token: prev.token.map((token) =>
-              token.symbol === "ETH"
+              token.symbol === 'ETH'
                 ? { ...token, balance: parseFloat(ethBalance) }
                 : token
             ),
           }));
         } catch (error) {
-          console.error("Failed to fetch ETH balance:", error);
+          console.error('Failed to fetch ETH balance:', error);
         }
       }
     };
@@ -202,7 +204,7 @@ export default function Home() {
     fetchEthBalance();
   }, [walletAddress, isWalletConnected]);
 
-  console.log("Account Details:", accountDetails);
+  console.log('Account Details:', accountDetails);
 
   useEffect(() => {
     const checkWalletConnection = async () => {
@@ -238,13 +240,13 @@ export default function Home() {
   }, [accountDetails]);
 
   const [ethPrices, setEthPrices] = useState({
-    todayPrice: "N/A",
-    prevPrice: "N/A",
+    todayPrice: 'N/A',
+    prevPrice: 'N/A',
   });
 
   useEffect(() => {
     const fetchEthPrices = async () => {
-      const ethPriceData = await getCryptoPrice("ETH");
+      const ethPriceData = await getCryptoPrice('ETH');
       setEthPrices({
         todayPrice: ethPriceData.todayPrice,
         prevPrice: ethPriceData.prevPrice, // Store previous price separately
@@ -275,10 +277,10 @@ export default function Home() {
 
   const fetchBalance = async () => {
     const balance = await getEthBalance(
-      "https://mainnet.base.org",
-      "0xdb5D6E7FCb63eF163Dd453962f3f1bFa52621108"
+      'https://mainnet.base.org',
+      '0xdb5D6E7FCb63eF163Dd453962f3f1bFa52621108'
     );
-    console.log("ETH Balance:", balance);
+    console.log('ETH Balance:', balance);
   };
 
   fetchBalance();
@@ -291,8 +293,7 @@ export default function Home() {
             <div className="flex flex-col gap-y-[10px] items-center justify-center min-h-[80vh]">
               <button
                 className="rounded-full p-[10px] px-[20px] text-white text-[18px] bg-blue-500 cursor-pointer hover:bg-blue-600 transition-all duration-300"
-                onClick={connectWallet}
-              >
+                onClick={connectWallet}>
                 Connect Wallet
               </button>
               <p className="text-center text-[#6c6c6c] font-[500] text-[18px]">
@@ -301,12 +302,6 @@ export default function Home() {
             </div>
           ) : (
             <>
-              <button
-                className="rounded-full p-[10px] px-[20px] text-white text-[18px] bg-blue-500 cursor-pointer hover:bg-blue-600 transition-all duration-300"
-                onClick={sendTokens}
-              >
-                Send
-              </button>
               {step === 1 ? (
                 <>
                   {isSwap ? (
@@ -344,6 +339,7 @@ export default function Home() {
                 />
               ) : step === 5 ? (
                 <Review
+                  walletAddress={walletAddress}
                   walletUsed={accountDetails.name}
                   tokenDetails={selectedToken}
                   recipientDetails={recipentDetails}

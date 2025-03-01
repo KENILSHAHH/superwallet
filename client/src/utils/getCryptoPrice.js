@@ -2,6 +2,7 @@ const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes in milliseconds
 const STORAGE_KEY = "crypto_price_data";
 
 export const getCryptoPrice = async (symbol) => {
+  console.log("hi")
   const cachedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 
   const now = new Date();

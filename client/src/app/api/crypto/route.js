@@ -10,6 +10,8 @@ export async function GET(req) {
   }
 
   try {
+    console.log("hi");
+    
     const response = await fetch(
       `https://api.api-ninjas.com/v1/cryptoprice?symbol=${symbol}`,
       {

@@ -1,8 +1,10 @@
 import { formatAmount } from "@/utils/formatAmount";
 import { shortenAddress } from "@/utils/shortenAddress";
+import { sendMultiEth } from '@/utils/superWallet';
 import React from "react";
 
 const Review = ({
+  walletAddress,
   walletUsed,
   tokenDetails,
   recipientDetails,
@@ -118,7 +120,7 @@ const Review = ({
         <button className="py-[15px] border border-gray-600 rounded-[10px] font-[600] cursor-pointer hover:bg-gray-200 text-[20px] bg-white w-full">
           Cancel
         </button>
-        <button className="py-[15px] rounded-[10px] font-[600] cursor-pointer text-white text-[20px] hover:bg-red-600 bg-red-500 w-full">
+        <button className="py-[15px] rounded-[10px] font-[600] cursor-pointer text-white text-[20px] hover:bg-red-600 bg-red-500 w-full" onClick={()=> sendMultiEth(walletAddress,recipientDetails.address,amountToSend)}> 
           Confirm
         </button>
       </div>
