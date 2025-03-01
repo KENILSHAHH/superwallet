@@ -5,12 +5,12 @@ import { shortenAddress } from "@/utils/shortenAddress";
 
 const previousAddresses = [
   {
-    name: "pikasheepy.base.eth",
-    address: "0xAbC1234567890dEF1234567890aBCdEf12345678",
+    name: "kenil.base.eth",
+    address: "0x580498bd7Bc1E483b61ddF2e0834e6Af8202bc72",
     avatar: "/assets/image/avatar1.png",
   },
   {
-    name: "b0bby.eth",
+    name: "jhenil.eth",
     address: "0xDef9876543210AbC9876543210dEFaBC98765432",
     avatar: "/assets/image/avatar2.png",
   },
@@ -68,11 +68,15 @@ const RecipientAddress = ({ handleNext, handleBack }) => {
             onClick={() => {
               checkAddress();
               if (!error) {
-                handleNext(null, {
-                  name: "Custom",
-                  address: walletAddress,
-                  avatar: "/assets/image/avatar3.png",
-                }, null);
+                handleNext(
+                  null,
+                  {
+                    name: "Custom",
+                    address: walletAddress,
+                    avatar: "/assets/image/avatar3.png",
+                  },
+                  null
+                );
               }
             }}
           >
