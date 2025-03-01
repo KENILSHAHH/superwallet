@@ -173,8 +173,9 @@ export async function bridgeTokenFrom1To2(
     'function sendERC20(address _tokenAddress, address _to, uint256 _amount, uint256 _chainId)',
   ];
   const bridgeAddress = '0x4200000000000000000000000000000000000028';
-  const provider = new ethers.JsonRpcProvider(alpha2rpc);
-  const contract = new ethers.Contract(bridgeAddress, abi, provider);
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
+  const contract = new ethers.Contract(bridgeAddress, abi, signer);
   const tx = await contract.sendERC20(
     tokenAddress,
     toAddress,
