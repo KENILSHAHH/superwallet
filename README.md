@@ -53,13 +53,32 @@ cd client
 ```bash
 npm install
 ```
+3️⃣ **Set up environment variables** (Refer `.env` example above)
 
-### 3️⃣ Run Locally
+4️⃣ **Run the development server**
+
 ```bash
 npm run dev
 ```
 
+The app will be live at: [http://localhost:3000](http://localhost:3000) 🚀
+
+## 📸 Project Demo
+
+Here are some snapshots of **Multichain Super Wallet** in action:
+
+<div align="center">
+  <img src="/path-to-image1.png" alt="Demo Screenshot 1" width="45%">
+  <img src="/path-to-image2.png" alt="Demo Screenshot 2" width="45%">
+</div>
+
+<div align="center">
+  <img src="/path-to-image3.png" alt="Demo Screenshot 3" width="45%">
+  <img src="/path-to-image4.png" alt="Demo Screenshot 4" width="45%">
+</div>
+
 ---
+
 
 ## 🎯 Future Roadmap
 🔜 Support for **more L2s** beyond OP Stack 🌍  
