@@ -1,7 +1,7 @@
 /** @format */
 
 import { ethers } from 'ethers';
-
+import { parseUnits } from 'viem';
 const alpha1rpc = 'https://interop-alpha-0.optimism.io';
 const alpha2rpc = 'https://interop-alpha-1.optimism.io';
 const alpha1rpcblockscout = 'https://optimism-interop-alpha-0.blockscout.com';
@@ -190,37 +190,87 @@ export async function bridgeTokenFrom2To1(
 /**
  * Send ETH across multiple chains.
  */
-export async function sendMultiEth(fromAddress, toAddress, amount) {
+export async function sendMultiEth(fromAddress, toAddress, amountToSend) {
+  const amount = parseUnits(amountToSend, 18);
   let remainingAmount = amount;
   const balanceOn1 = await getEthBalance(alpha1rpc, fromAddress);
-  console.log(`Balance on Alpha-1: ${balanceOn1} ETH`);
-  const provider = new ethers.JsonRpcProvider(alpha1rpc);
-    const tx = {
-      to: toAddress,
-      value: ethers.parseEther(amount), // Convert ETH to Wei
-      gasLimit: 21000, // Standard for ETH transfer
-    };
+  if (!window.ethereum) {
+    console.error('MetaMask is not installed!');
+    return;
+  }
 
-    // Populate missing fields (like nonce & gas price)
-    const populatedTx = await provider.populateTransaction(tx);
+  // Request account access
+  const provider = new ethers.BrowserProvider(window.ethereum);
+  const signer = await provider.getSigner();
+
+  console.log(provider);
+  const tx1 = await signer.sendTransaction({
+    to: toAddress,
+    value: ethers.parseEther(balanceOn1.toString()),
+  });
   console.log(
     'View the transaction on Blockscout: ',
     `${alpha1rpcblockscout}/tx/${tx1.hash}`
   );
-  remainingAmount -= balanceOn1;
-
-  if (remainingAmount > 0) {
-    const tx2 = await provider.sendTransaction({
-      to: toAddress,
-      value: ethers.parseEther(remainingAmount),
+  remainingAmount -= parseUnits(balanceOn1, 18);
+  const formatted = Number(remainingAmount) / 1e18;
+  console.log(remainingAmount.toString().slice(0, 7));
+  try {
+    // Attempt to switch to the chain
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: '0x190A85C1' }], // 420120001 in hex
     });
-    console.log(
-      'View the transaction on Blockscout: ',
-      `${alpha1rpcblockscout}/tx/${tx2.hash}`
-    );
+
+    console.log('Successfully switched to Interop Alpha 1 (Optimism)');
+  } catch (error) {
+    // If the chain is not added, prompt the user to add it
+    if (error.code === 4902) {
+      console.log('Chain not found, adding it...');
+      await addOptimismInteropChain();
+    } else {
+      console.error('Error switching chain:', error);
+    }
+  }
+  setTimeout(async () => {
+    const provider1 = new ethers.BrowserProvider(window.ethereum);
+    const signer1 = await provider1.getSigner();
+    if (remainingAmount > 0) {
+      const tx2 = await signer1.sendTransaction({
+        to: toAddress,
+        value: ethers.parseEther(formatted.toString()),
+      });
+      console.log(
+        'View the transaction on Blockscout: ',
+        `${alpha2rpcblockscout}/tx/${tx2.hash}`
+      );
+    }
+  }, 5000);
+}
+async function addOptimismInteropChain() {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_addEthereumChain',
+      params: [
+        {
+          chainId: '0x190A85C1', // 420120001 in hex
+          chainName: 'Interop Alpha 1 (Optimism)',
+          nativeCurrency: {
+            name: 'Ether',
+            symbol: 'ETH',
+            decimals: 18,
+          },
+          rpcUrls: ['https://interop-alpha-1.optimism.io'],
+          blockExplorerUrls: ['https://explorer.interop-alpha-1.optimism.io'],
+        },
+      ],
+    });
+
+    console.log('Interop Alpha 1 (Optimism) added successfully!');
+  } catch (error) {
+    console.error('Error adding chain:', error);
   }
 }
-
 /**
  * Send ETH to multiple addresses.
  */

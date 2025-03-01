@@ -95,32 +95,30 @@ async function bridgeTokenFrom2To1(toAddress, tokenAmount, tokenAddress) {
 }
 
 async function sendMultiEth(fromAddress, toAddress, amount) {
-    let totalAmount = amount;
-    const provider = new ethers.JsonRpcProvider(alpha1rpc);
-    const balanceOn1 = await getEthBalance(alpha1rpc, fromAddress);
-    const tx1 = await provider.sendTransaction({
-      to: toAddress,
-      value: ethers.utils.parseEther(balanceOn1),
-    });
-    console.log(
-      'View the transaction on Blockscout: ',
-      `${alpha1rpcblockscout}/tx/${tx.hash}`
-    );
-    totalAmount = totalAmount - balanceOn1;
-    const tx2 = await provider.sendTransaction({
-      to: toAddress,
-      value: ethers.utils.parseEther(totalAmount),
-    });
-    console.log(
-      'View the transaction on Blockscout: ',
-      `${alpha1rpcblockscout}/tx/${tx.hash}`
-    );
+  let totalAmount = amount;
+  const provider = new ethers.JsonRpcProvider(alpha1rpc);
+  console.log(provider);
+  const balanceOn1 = await getEthBalance(alpha1rpc, fromAddress);
+  const tx1 = await provider.sendTransaction({
+    to: toAddress,
+    value: ethers.utils.parseEther(balanceOn1),
+  });
+  console.log(
+    'View the transaction on Blockscout: ',
+    `${alpha1rpcblockscout}/tx/${tx.hash}`
+  );
+  totalAmount = totalAmount - balanceOn1;
+  
+  const tx2 = await provider.sendTransaction({
+    to: toAddress,
+    value: ethers.utils.parseEther(totalAmount),
+  });
+  console.log(
+    'View the transaction on Blockscout: ',
+    `${alpha2rpcblockscout}/tx/${tx2.hash}`
+  );
 }
 
-async function sendToMultipleAddresses( toAddressesArray, amounts) {
+async function sendToMultipleAddresses(toAddressesArray, amounts) {}
 
-}
-
-
-async
-
+async;
