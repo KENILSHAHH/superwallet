@@ -163,7 +163,6 @@ export async function bridgeEthFrom2To1(toAddress, amount) {
  * Bridge Token from Alpha-2 to Alpha-1.
  */
 
-  
 export async function bridgeTokenFrom1To2(
   toAddress,
   tokenAmount,
@@ -176,10 +175,11 @@ export async function bridgeTokenFrom1To2(
   const provider = new ethers.BrowserProvider(window.ethereum);
   const signer = await provider.getSigner();
   const contract = new ethers.Contract(bridgeAddress, abi, signer);
+  const amount = ethers.parseEther(tokenAmount, 18);
   const tx = await contract.sendERC20(
     tokenAddress,
     toAddress,
-    tokenAmount,
+    amount,
     420120001
   );
 
