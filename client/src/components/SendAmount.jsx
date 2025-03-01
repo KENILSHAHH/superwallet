@@ -112,7 +112,7 @@ const SendAmount = ({ tokenDetails, handleNext, handleBack }) => {
                 <div className="rounded-full p-[5px] border border-gray-300">
                   <img
                     className="h-[40px] w-[40px] rounded-full"
-                    src="/assets/image/eth.png"
+                    src={tokenDetails.image}
                   />
                 </div>
 
