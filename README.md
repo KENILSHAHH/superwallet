@@ -1,4 +1,4 @@
-# 🌍💰 Multichain Super Wallet – The Future of Cross-Chain Payments
+# 🌍💰  SuperWallet – SuperWallet for Super Chains
 
 🚀 **ETHDenver Hackathon Project** | ✨ Built with **Superchain Interoperability Protocol** | 🔗 Seamless Cross-Chain Payments  
 
