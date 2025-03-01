@@ -6,7 +6,7 @@ const SendAmount = ({ tokenDetails, handleNext, handleBack }) => {
   const [amountEth, setAmountEth] = useState("0");
   const [amountUsd, setAmountUsd] = useState("0");
   const [isTypeEth, setIsTypeEth] = useState(true);
-
+  console.log(tokenDetails.balance);
   // Update USD when ETH changes
   useEffect(() => {
     if (isTypeEth) {

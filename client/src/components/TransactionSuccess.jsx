@@ -1,6 +1,12 @@
+import { shortenAddress } from "@/utils/shortenAddress";
 import React from "react";
 
-const TransferSuccess = () => {
+const TransferSuccess = ({
+  amountToSendList,
+  recipentDetailsList,
+  tokenDetails,
+  networkFee,
+}) => {
   return (
     <div className="flex flex-col items-center justify-between min-h-[75vh]">
       <div className="flex flex-col items-center justify-center w-full p-6">
@@ -25,35 +31,44 @@ const TransferSuccess = () => {
           <div className="flex justify-between text-lg font-medium">
             <span>Amount</span>
             <span className="flex items-center gap-1">
-              <img src="/assets/image/eth.png" alt="ETH" className="w-5 h-5" />{" "}
-              12 ETH
+              <img src={tokenDetails.image} alt="ETH" className="w-5 h-5" />{" "}
+              {amountToSendList.reduce(
+                (sum, amount) => sum + parseFloat(amount),
+                0
+              )}{" "}
+              {tokenDetails.symbol}
             </span>
           </div>
           <div className="flex justify-between text-lg font-medium mt-3">
             <span>To</span>
-            <span className="flex items-center gap-2">
-              <img
-                src="/assets/image/avatar1.png"
-                alt="User"
-                className="w-6 h-6 rounded-full"
-              />
-              pikasheepy.eth.base
-            </span>
+            <div className="flex flex-col gap-y-[5px]">
+              {recipentDetailsList.map((recipient, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <img
+                    src={recipient.avatar}
+                    alt="User"
+                    className="w-6 h-6 rounded-full"
+                  />
+                  {shortenAddress(recipient.address)}
+                </div>
+              ))}
+            </div>
           </div>
           <div className="flex justify-between text-lg font-medium mt-3">
             <span>Network fee</span>
             <div className="flex items-center gap-x-[5px] text-gray-500">
               <img
-                src="/assets/image/base.png"
+                src="/assets/image/420120001.png"
                 alt="ETH"
-                className="w-[20px] h-[20px]"
+                className="w-[20px] h-[20px] rounded-full"
               />
-              <span>&lt; $0.0001</span>
+              <span>
+                {networkFee < 0.0001 ? "< $0.0001" : `$ ${networkFee}`}
+              </span>
             </div>
           </div>
         </div>
       </div>
-
 
       <div className="mt-6 w-full px-[20px]">
         <button className="w-full py-3 text-lg font-medium bg-gray-100 rounded-[15px] mb-3 hover:bg-gray-200 cursor-pointer">
