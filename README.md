@@ -1,6 +1,7 @@
 # 🌍💰  SuperWallet – SuperWallet for Super Chains
 
-🚀 **ETHDenver Hackathon Project** | ✨ Built with **Superchain Interoperability Protocol** | 🔗 Seamless Cross-Chain Payments  
+🚀 **ETHDenver Hackathon Project** | ✨ Built with **Superchain Interoperability Protocol** 
+
 
 ## 🛠 Overview
 With the rise of **Layer 2s and Appchains** on Ethereum, liquidity has become fragmented across multiple chains. **Multichain Super Wallet** solves this by enabling **seamless multichain token transfers** across **Optimism Superchain** using the **Superchain Interoperability Protocol**. Our solution unifies user experience and liquidity across the **OP Stack ecosystem**. 🌉💸
