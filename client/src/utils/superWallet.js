@@ -162,7 +162,9 @@ export async function bridgeEthFrom2To1(toAddress, amount) {
 /**
  * Bridge Token from Alpha-2 to Alpha-1.
  */
-export async function bridgeTokenFrom2To1(
+
+  
+export async function bridgeTokenFrom1To2(
   toAddress,
   tokenAmount,
   tokenAddress
@@ -177,7 +179,7 @@ export async function bridgeTokenFrom2To1(
     tokenAddress,
     toAddress,
     tokenAmount,
-    420120000
+    420120001
   );
 
   console.log(
