@@ -1,7 +1,7 @@
 /** @format */
 
 import { ethers } from 'ethers';
-import { get } from 'node:https';
+
 
 const alpha1rpc = 'https://interop-alpha-0.optimism.io';
 const alpha2rpc = 'https://interop-alpha-1.optimism.io';
