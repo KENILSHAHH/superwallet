@@ -294,27 +294,39 @@ export default function Home() {
       setIsTransferring(true);
 
       try {
-        for (let i = 0; i < recipentDetailsList.length; i++) {
-          if (TokenDetails.symbol === "ETH") {
-            await sendMultiEth(
-              walletAddress.address,
-              recipentDetailsList[i].address,
-              amountToSendList[i]
-            );
-          } else {
-            await bridgeTokenFrom1To2(
-              walletAddress.address,
-              amountToSendList[i],
-              "0x69C34FC75d7445129562B98540bc60B0Dc7D8849"
-            );
-          }
+        setIsTransferring(true);
+
+        let transferPromise;
+
+        if (TokenDetails.symbol === "ETH") {
+          transferPromise = sendMultiEth(
+            walletAddress.address,
+            recipentDetailsList[0].address,
+            amountToSendList[0]
+          );
+        } else {
+          transferPromise = bridgeTokenFrom1To2(
+            recipentDetailsList[0].address,
+            amountToSendList[0],
+            "0x69C34FC75d7445129562B98540bc60B0Dc7D8849"
+          );
         }
 
-        setTransferSuccess(true);
+        // Execute without blocking and handle success/failure separately
+        transferPromise
+          .then(() => {
+            setTransferSuccess(true);
+          })
+          .catch((error) => {
+            console.error("Transaction failed:", error);
+            setTransferSuccess(false);
+          })
+          .finally(() => {
+            setIsTransferring(false);
+          });
       } catch (error) {
-        console.error("Transaction failed:", error);
+        console.error("Unexpected error:", error);
         setTransferSuccess(false);
-      } finally {
         setIsTransferring(false);
       }
     }
