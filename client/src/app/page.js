@@ -81,7 +81,7 @@ export default function Home() {
   const [ethPrices, setEthPrices] = useState({
     todayPrice: "N/A",
     prevPrice: "N/A",
-  }); 
+  });
 
   useEffect(() => {
     const fetchEthPrices = async () => {
@@ -95,7 +95,7 @@ export default function Home() {
     fetchEthPrices();
   }, []);
 
-  const handleNext = (index, details) => {
+  const handleNext = (index, details, amountToSend) => {
     if (step === 1) {
       const token = {
         ...accountDetails.token[index],
@@ -103,17 +103,17 @@ export default function Home() {
       };
       setSelectedToken(token);
     } else if (step === 3) {
-      console.log(details);
-      setRecipientDetails(recipentDetails);
+      setRecipientDetails(details);
+    } else if (step === 4) {
+      setAmountToSend(amountToSend);
     }
+
     setStep(step + 1);
   };
-
+  console.log(amountToSend);
   const handleBack = () => {
     setStep(step - 1);
   };
-
-  console.log(recipentDetails);
 
   return (
     <div className="#f2f3fa">
@@ -135,9 +135,21 @@ export default function Home() {
           ) : step === 3 ? (
             <RecipientAddress handleNext={handleNext} handleBack={handleBack} />
           ) : step === 4 ? (
-            <SendAmount />
+            <SendAmount
+              tokenDetails={selectedToken}
+              handleNext={handleNext}
+              handleBack={handleBack}
+            />
           ) : step === 5 ? (
-            <Review />
+            <Review
+              walletUsed={accountDetails.name}
+              tokenDetails={selectedToken}
+              recipientDetails={recipentDetails}
+              amountToSend={amountToSend}
+              handleNext={handleNext}
+              handleBack={handleBack}
+              networkFee={0.002}
+            />
           ) : (
             <TransferingPage />
           )}

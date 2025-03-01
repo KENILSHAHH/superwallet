@@ -1,3 +1,4 @@
+import { formatAmount } from "@/utils/formatAmount";
 import React from "react";
 
 const TokenDetails = ({ tokenDetails, handleNext, handleBack }) => {
@@ -55,11 +56,7 @@ const TokenDetails = ({ tokenDetails, handleNext, handleBack }) => {
       <div className="px-[20px]">
         <h2 className="text-[#6c6c6c] font-[500] text-[20px]"> Your balance</h2>
         <h1 className="text-[32px] font-[600]">
-          $
-          {(tokenDetails.balance * tokenDetails.price).toLocaleString("en-US", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}
+          ${formatAmount(tokenDetails.balance * tokenDetails.price, 2)}
         </h1>
         <h3 className="text-[#6c6c6c] font-[400] text-[20px]">
           {tokenDetails.balance} {tokenDetails.symbol}
@@ -155,11 +152,7 @@ const TokenDetails = ({ tokenDetails, handleNext, handleBack }) => {
                   {/* Token Name & Balance */}
                   <div className="flex flex-col">
                     <h1 className="font-[600] text-[#17161a] text-[18px]">
-                      $
-                      {(chain.balance * tokenDetails.price).toLocaleString(
-                        "en-US",
-                        { minimumFractionDigits: 2, maximumFractionDigits: 2 }
-                      )}
+                      ${formatAmount(chain.balance * tokenDetails.price, 2)}
                     </h1>
                     <h1 className="font-[400] text-[#747474] text-[17px]">
                       {chain.name}

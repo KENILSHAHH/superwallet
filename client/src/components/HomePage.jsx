@@ -1,30 +1,64 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { getCryptoPrice } from "@/utils/getCryptoPrice";
+import React, { useState } from "react";
+import { formatAmount } from "@/utils/formatAmount";
 
 const HomePage = ({ accountDetails, ethPrices, tokenPrices, handleNext }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const ethReturns = (
     (parseFloat(ethPrices.todayPrice.replace(/,/g, "")) -
       parseFloat(ethPrices.prevPrice.replace(/,/g, ""))) /
     100
   ).toFixed(2);
 
-  const totalValue = accountDetails.token
-    .reduce(
+  const totalValue = formatAmount(
+    accountDetails.token.reduce(
       (sum, token) =>
         sum +
         (tokenPrices[token.symbol]
           ? token.balance * tokenPrices[token.symbol]
           : 0),
       0
-    )
-    .toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+    ),
+    2
+  );
 
   return (
-    <div>
+    <div className="relative">
+      {isModalOpen && (
+        <div className="absolute rounded-[20px] p-[20px] w-full flex flex-col justify-center items-end top-0 left-0 h-full bg-[#0000006e] backdrop-blur-xs z-50">
+          <div className="w-[80%] h-[90%] rounded-[10px] bg-white shadow-[10px] z-index-100 transition-transform transform translate-x-0">
+            <div className="h-full">
+              <div className="flex justify-between items-center p-4 border-b border-gray-300">
+                <h2 className="text-lg text-center w-full font-[700]">
+                  Import Tokens
+                </h2>
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="text-gray-600 hover:text-gray-800"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="flex flex-col h-[450px] justify-between p-4">
+                <div className="flex flex-col gap-y-[10px]">
+                  <p className="font-[500] text-gray-700">
+                    Token contract address
+                  </p>
+                  <input
+                    type="text"
+                    placeholder="Token address"
+                    className="w-full p-2 border border-gray-300 rounded-md"
+                  />
+                </div>
+                <button className="bg-blue-500 text-white p-[10px] text-[18px] rounded-full">
+                  Import
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col gap-y-[10px] p-[10px]">
         <div className="flex bg-[#f4f4f4] rounded-[20px] items-center gap-x-[10px] justify-between p-[15px]">
           <div className="flex items-center gap-x-[15px]">
@@ -126,13 +160,29 @@ const HomePage = ({ accountDetails, ethPrices, tokenPrices, handleNext }) => {
         <span className="w-full border-t border-gray-300" />
       </div>
       <div className="flex flex-col gap-y-[10px] p-[10px] px-[20px]">
-        <h1 className="font-[500] text-[17px] text-[#747474]">Tokens</h1>
+        <div className="flex items-center gap-x-[10px] justify-between">
+          <h1 className="font-[500] text-[17px] text-[#747474]">Tokens</h1>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="flex items-center gap-x-[5px] rounded-[10px] bg-blue-100 hover:bg-blue-200 border border-blue-500 px-[15px] cursor-pointer transition-all duration-300"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className="size-5"
+            >
+              <path d="M10.75 4.75a.75.75 0 0 0-1.5 0v4.5h-4.5a.75.75 0 0 0 0 1.5h4.5v4.5a.75.75 0 0 0 1.5 0v-4.5h4.5a.75.75 0 0 0 0-1.5h-4.5v-4.5Z" />
+            </svg>
+            Add Token
+          </button>
+        </div>
         <div className="flex flex-col gap-y-[10px] w-full">
           {accountDetails.token.map((token, index) => (
             <div
               key={index}
               className="flex items-center gap-x-[10px] justify-between p-[10px] cursor-pointer hover:bg-[#f4f4f4] rounded-[20px] transition-all duration-300"
-              onClick={() => handleNext(index, null)}
+              onClick={() => handleNext(index, null, null)}
             >
               {/* Token Icon with Badge */}
               <div className="flex items-center gap-x-[15px]">
@@ -167,13 +217,11 @@ const HomePage = ({ accountDetails, ethPrices, tokenPrices, handleNext }) => {
 
               <h1 className="font-[600] text-[#17161a] text-[21px]">
                 {tokenPrices[token.symbol]
-                  ? `$${(
-                      token.balance * tokenPrices[token.symbol]
-                    ).toLocaleString("en-US", {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}`
-                  : token.balance}
+                  ? `$${formatAmount(
+                      token.balance * tokenPrices[token.symbol],
+                      2
+                    )}`
+                  : "N/A"}
               </h1>
             </div>
           ))}

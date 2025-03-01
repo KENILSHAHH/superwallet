@@ -1,6 +1,16 @@
+import { formatAmount } from "@/utils/formatAmount";
+import { shortenAddress } from "@/utils/shortenAddress";
 import React from "react";
 
-const Review = () => {
+const Review = ({
+  walletUsed,
+  tokenDetails,
+  recipientDetails,
+  networkFee,
+  amountToSend,
+  handleNext,
+  handleBack,
+}) => {
   return (
     <div className="flex flex-col min-h-[80vh] justify-between">
       <div className="flex flex-col gap-y-[10px] p-[10px] px-[20px]">
@@ -11,7 +21,8 @@ const Review = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className="size-6 cursor-pointer"
+            onClick={handleBack}
           >
             <path
               strokeLinecap="round"
@@ -27,18 +38,20 @@ const Review = () => {
               <div className="rounded-full p-[5px] border border-gray-300">
                 <img
                   className="h-[40px] w-[40px] rounded-full"
-                  src="/assets/image/eth.png"
+                  src={tokenDetails.image}
                 />
               </div>
               <h1 className="font-[600] text-[#17161a] text-[20px]">
-                Ethereum
+                {tokenDetails.name}
               </h1>
             </div>
             <div className="flex flex-col">
               <h1 className="font-[600] text-[#17161a] text-[18px]">
-                $31,124.49
+                $ {formatAmount(amountToSend * tokenDetails.price, 2)}
               </h1>
-              <h1 className="font-[400] text-[#747474] text-[17px]">12 ETH</h1>
+              <h1 className="font-[400] text-[#747474] text-[17px]">
+                {formatAmount(amountToSend)} {tokenDetails.symbol}
+              </h1>
             </div>
           </div>
           <div className="flex items-center justify-center w-[50px] h-[40px]">
@@ -58,36 +71,46 @@ const Review = () => {
             </svg>
           </div>
           <div className="flex items-center px-[5px] gap-x-[10px]">
-            {/* Profile Image */}
             <img
-              src="/assets/image/avatar1.png"
+              src={recipientDetails.avatar}
               className="h-[45px] w-[45px] rounded-full"
               alt="User"
             />
 
             {/* User Info */}
             <div className="flex flex-col">
-              <h1 className="text-[20px] font-[500]">pikasheepy.base.eth</h1>
-              <h1 className="text-[16px] text-gray-500">0xE3...1510</h1>
+              <h1 className="text-[20px] font-[500]">
+                {recipientDetails.name}
+              </h1>
+              <h1 className="text-[16px] text-gray-500">
+                {shortenAddress(recipientDetails.address)}
+              </h1>
             </div>
           </div>
         </div>
         <div className="flex flex-col gap-y-[10px] py-[20px] p-[10px] text-[17px] text-[#17161a]">
           <div className="flex justify-between">
             <span className="text-gray-500">Wallet used</span>
-            <span>Superchain Wallet</span>
+            <span>{walletUsed}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Networks</span>
-            <span>OP Mainnet, Unichain</span>
+            <span>
+              {tokenDetails.chains.map((chain, index) => (
+                <span key={index} className="text-[#747474]">
+                  {chain.name}
+                  {index < tokenDetails.chains.length - 1 ? ", " : ""}
+                </span>
+              ))}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Network fee</span>
-            <span>&lt; $0.0001</span>
+            <span>{networkFee < 0.0001 ? "< $0.0001" : `$ ${networkFee}`}</span>
           </div>
           <div className="flex justify-between font-[600]">
             <span>Total cost</span>
-            <span>$31,727.40</span>
+            <span>$ {formatAmount(amountToSend * tokenDetails.price + networkFee, 2)}</span>
           </div>
         </div>
       </div>

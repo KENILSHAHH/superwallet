@@ -38,7 +38,7 @@ const RecipientAddress = ({ handleNext, handleBack }) => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className="size-6 cursor-pointer"
             onClick={handleBack}
           >
             <path
@@ -68,7 +68,11 @@ const RecipientAddress = ({ handleNext, handleBack }) => {
             onClick={() => {
               checkAddress();
               if (!error) {
-                handleNext(null, "hi");
+                handleNext(null, {
+                  name: "Custom",
+                  address: walletAddress,
+                  avatar: "/assets/image/avatar3.png",
+                }, null);
               }
             }}
           >
@@ -96,7 +100,7 @@ const RecipientAddress = ({ handleNext, handleBack }) => {
               <div
                 key={index}
                 className="flex items-center gap-x-[10px] p-[10px] rounded-[12px] cursor-pointer hover:bg-gray-100 transition-all duration-300"
-                onClick={() => handleNext((null, user))}
+                onClick={() => handleNext(null, user, null)}
               >
                 {/* Profile Image */}
                 <img
