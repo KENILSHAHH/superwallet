@@ -1,47 +1,47 @@
 /** @format */
 
-"use client";
+'use client';
 
-import HomePage from "@/components/HomePage";
-import RecipientAddress from "@/components/RecipientAddress";
-import Review from "@/components/Review";
-import SendAmount from "@/components/SendAmount";
-import TokenDetails from "@/components/TokenDetails";
-import TransferingPage from "@/components/TransferingPage";
-import { useState, useEffect, useMemo } from "react";
-import { getCryptoPrice } from "@/utils/getCryptoPrice";
-import { ethers } from "ethers";
+import HomePage from '@/components/HomePage';
+import RecipientAddress from '@/components/RecipientAddress';
+import Review from '@/components/Review';
+import SendAmount from '@/components/SendAmount';
+import TokenDetails from '@/components/TokenDetails';
+import TransferingPage from '@/components/TransferingPage';
+import { useState, useEffect, useMemo } from 'react';
+import { getCryptoPrice } from '@/utils/getCryptoPrice';
+import { ethers } from 'ethers';
 import {
   bridgeTokenFrom1To2,
   getChainName,
   getEthBalance,
   getRpcUrl,
   getTokenBalance,
-} from "@/utils/superWallet";
-import { getWalletTokens } from "@/utils/getTokenList";
-import BridgeToken from "@/components/Bridge";
-import { sendMultiEth } from "@/utils/superWallet";
-import TransactionError from "@/components/TransactionError";
-import TransactionSuccess from "@/components/TransactionSuccess";
+} from '@/utils/superWallet';
+import { getWalletTokens } from '@/utils/getTokenList';
+import BridgeToken from '@/components/Bridge';
+import { sendMultiEth } from '@/utils/superWallet';
+import TransactionError from '@/components/TransactionError';
+import TransactionSuccess from '@/components/TransactionSuccess';
 
 export default function Home() {
   const [accountDetails, setAccountDetails] = useState({
-    walletAddress: "", // ✅ Initially empty, updates when wallet connects
+    walletAddress: '', // ✅ Initially empty, updates when wallet connects
     token: [
       {
-        name: "Ethereum",
-        symbol: "ETH",
+        name: 'Ethereum',
+        symbol: 'ETH',
         balance: 0, // ✅ Total balance across all chains
         price: null,
-        image: "/assets/image/eth.png",
+        image: '/assets/image/eth.png',
         chains: [], // ✅ Chains will be dynamically updated
       },
       {
-        name: "USDC",
-        symbol: "USDC",
+        name: 'USDC',
+        symbol: 'USDC',
         balance: 0,
         price: 1,
-        image: "/assets/image/usdc.png",
+        image: '/assets/image/usdc.png',
         chains: [],
       },
     ],
@@ -52,7 +52,7 @@ export default function Home() {
   const [selectedToken, setSelectedToken] = useState(null);
   const [recipentDetailsList, setRecipientDetailsList] = useState([]);
   const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddress, setWalletAddress] = useState('');
   const [isSwap, setIsSwap] = useState(false);
   const [amountToSendList, setAmountToSendList] = useState([]);
 
@@ -63,15 +63,15 @@ export default function Home() {
   const [transferSuccess, setTransferSuccess] = useState(false);
 
   const tokenList = [
-    { symbol: "USDT", address: "0xdAC17F958D2ee523a2206206994597C13D831ec7" }, // USDT
-    { symbol: "DAI", address: "0x6B175474E89094C44Da98b954EedeAC495271d0F" }, // DAI
-    { symbol: "USDC", address: "0xA0b86991c6218b36c1d19D4a2e9eb0cE3606eB48" }, // USDC
+    { symbol: 'USDT', address: '0xdAC17F958D2ee523a2206206994597C13D831ec7' }, // USDT
+    { symbol: 'DAI', address: '0x6B175474E89094C44Da98b954EedeAC495271d0F' }, // DAI
+    { symbol: 'USDC', address: '0xA0b86991c6218b36c1d19D4a2e9eb0cE3606eB48' }, // USDC
   ];
 
   const connectWallet = async () => {
     try {
       if (!window.ethereum) {
-        alert("MetaMask is not installed. Please install it to continue.");
+        alert('MetaMask is not installed. Please install it to continue.');
         return;
       }
 
@@ -87,15 +87,15 @@ export default function Home() {
       // ✅ Call the function to update account details
       updateAccountDetails(address, chainId);
     } catch (error) {
-      console.error("Wallet connection failed:", error);
+      console.error('Wallet connection failed:', error);
     }
   };
 
   const disconnectWallet = () => {
-    setWalletAddress("");
+    setWalletAddress('');
     setIsWalletConnected(false);
     setAccountDetails({
-      walletAddress: "",
+      walletAddress: '',
       token: accountDetails.token.map((token) => ({
         ...token,
         balance: 0,
@@ -108,7 +108,7 @@ export default function Home() {
     try {
       const chainIdsToCheck = [420120000, 420120001];
       const provider = new ethers.BrowserProvider(window.ethereum);
-      const usdcAddress = "0x69C34FC75d7445129562B98540bc60B0Dc7D8849";
+      const usdcAddress = '0x69C34FC75d7445129562B98540bc60B0Dc7D8849';
 
       let ethChains = [];
       let usdcChains = [];
@@ -162,26 +162,26 @@ export default function Home() {
         ...prev,
         walletAddress,
         token: prev.token.map((token) => {
-          if (token.symbol === "ETH") {
+          if (token.symbol === 'ETH') {
             return { ...token, balance: totalEthBalance, chains: ethChains };
-          } else if (token.symbol === "USDC") {
+          } else if (token.symbol === 'USDC') {
             return { ...token, balance: totalUsdcBalance, chains: usdcChains };
           }
           return token;
         }),
       }));
     } catch (error) {
-      console.error("Error updating account details:", error);
+      console.error('Error updating account details:', error);
     }
   };
 
   const sendTokens = async (token, recipient, amount) => {
     await sendMultiEth(
-      "0xdb5D6E7FCb63eF163Dd453962f3f1bFa52621108",
-      "0x64Ab79D6aBFcBd9B316d0b987638871D08B24315",
-      "1.0"
+      '0xdb5D6E7FCb63eF163Dd453962f3f1bFa52621108',
+      '0x64Ab79D6aBFcBd9B316d0b987638871D08B24315',
+      '1.0'
     );
-    console.log("Tokens sent successfully!");
+    console.log('Tokens sent successfully!');
   };
 
   useEffect(() => {
@@ -197,13 +197,13 @@ export default function Home() {
           setAccountDetails((prev) => ({
             ...prev,
             token: prev.token.map((token) =>
-              token.symbol === "ETH"
+              token.symbol === 'ETH'
                 ? { ...token, balance: parseFloat(ethBalance) }
                 : token
             ),
           }));
         } catch (error) {
-          console.error("Failed to fetch ETH balance:", error);
+          console.error('Failed to fetch ETH balance:', error);
         }
       }
     };
@@ -221,7 +221,7 @@ export default function Home() {
     fetchEthBalance();
   }, [walletAddress, isWalletConnected]);
 
-  console.log("Account Details:", accountDetails);
+  console.log('Account Details:', accountDetails);
 
   useEffect(() => {
     const checkWalletConnection = async () => {
@@ -257,13 +257,13 @@ export default function Home() {
   }, [accountDetails]);
 
   const [ethPrices, setEthPrices] = useState({
-    todayPrice: "N/A",
-    prevPrice: "N/A",
+    todayPrice: 'N/A',
+    prevPrice: 'N/A',
   });
 
   useEffect(() => {
     const fetchEthPrices = async () => {
-      const ethPriceData = await getCryptoPrice("ETH");
+      const ethPriceData = await getCryptoPrice('ETH');
       setEthPrices({
         todayPrice: ethPriceData.todayPrice,
         prevPrice: ethPriceData.prevPrice, // Store previous price separately
@@ -297,8 +297,9 @@ export default function Home() {
         setIsTransferring(true);
 
         let transferPromise;
-
-        if (TokenDetails.symbol === "ETH") {
+        console.log('Token Details:', selectedToken);
+        console.log('Token Details:', selectedToken.symbol);
+        if (selectedToken.symbol == 'ETH') {
           transferPromise = sendMultiEth(
             walletAddress.address,
             recipentDetailsList[0].address,
@@ -308,7 +309,7 @@ export default function Home() {
           transferPromise = bridgeTokenFrom1To2(
             recipentDetailsList[0].address,
             amountToSendList[0],
-            "0x69C34FC75d7445129562B98540bc60B0Dc7D8849"
+            '0x69C34FC75d7445129562B98540bc60B0Dc7D8849'
           );
         }
 
@@ -318,14 +319,14 @@ export default function Home() {
             setTransferSuccess(true);
           })
           .catch((error) => {
-            console.error("Transaction failed:", error);
+            console.error('Transaction failed:', error);
             setTransferSuccess(false);
           })
           .finally(() => {
             setIsTransferring(false);
           });
       } catch (error) {
-        console.error("Unexpected error:", error);
+        console.error('Unexpected error:', error);
         setTransferSuccess(false);
         setIsTransferring(false);
       }
@@ -344,10 +345,10 @@ export default function Home() {
 
   const fetchBalance = async () => {
     const balance = await getEthBalance(
-      "https://mainnet.base.org",
-      "0xdb5D6E7FCb63eF163Dd453962f3f1bFa52621108"
+      'https://mainnet.base.org',
+      '0xdb5D6E7FCb63eF163Dd453962f3f1bFa52621108'
     );
-    console.log("ETH Balance:", balance);
+    console.log('ETH Balance:', balance);
   };
 
   fetchBalance();
@@ -360,8 +361,7 @@ export default function Home() {
             <div className="flex flex-col gap-y-[10px] items-center justify-center min-h-[80vh]">
               <button
                 className="rounded-full p-[10px] px-[20px] text-white text-[18px] bg-blue-500 cursor-pointer hover:bg-blue-600 transition-all duration-300"
-                onClick={connectWallet}
-              >
+                onClick={connectWallet}>
                 Connect Wallet
               </button>
               <p className="text-center text-[#6c6c6c] font-[500] text-[18px]">

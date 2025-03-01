@@ -235,20 +235,19 @@ export async function sendMultiEth(fromAddress, toAddress, amountToSend) {
       console.error('Error switching chain:', error);
     }
   }
-  setTimeout(async () => {
-    const provider1 = new ethers.BrowserProvider(window.ethereum);
-    const signer1 = await provider1.getSigner();
-    if (remainingAmount > 0) {
-      const tx2 = await signer1.sendTransaction({
-        to: toAddress,
-        value: ethers.parseEther(formatted.toString()),
-      });
-      console.log(
-        'View the transaction on Blockscout: ',
-        `${alpha2rpcblockscout}/tx/${tx2.hash}`
-      );
-    }
-  }, 5000);
+
+  const provider1 = new ethers.BrowserProvider(window.ethereum);
+  const signer1 = await provider1.getSigner();
+  if (remainingAmount > 0) {
+    const tx2 = await signer1.sendTransaction({
+      to: toAddress,
+      value: ethers.parseEther(formatted.toString()),
+    });
+    console.log(
+      'View the transaction on Blockscout: ',
+      `${alpha2rpcblockscout}/tx/${tx2.hash}`
+    );
+  }
 }
 async function addOptimismInteropChain() {
   try {
