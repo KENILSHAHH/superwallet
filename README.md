@@ -83,19 +83,13 @@ Here are some snapshots of **Multichain Super Wallet** in action:
 ---
 
 
-## 🎯 Future Roadmap
-🔜 Support for **more L2s** beyond OP Stack 🌍  
-🔜 Expand to **DeFi transactions** 🚀  
-🔜 Integrate **zkSync, Arbitrum & Starknet** 🛡️  
+
 
 ---
 
 ## ❤️ Contributing
 We welcome contributions from the community! Fork the repo, create a PR, and let's build the **future of multichain payments** together! 💪  
 
----
 
-## 📩 Contact
-📧 [Your Email] | 🐦 [Twitter Handle] | 🌐 [Project Website]  
 
 ⚡ **ETHDenver 2025 Hackathon Submission** 🚀
