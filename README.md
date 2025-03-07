@@ -71,7 +71,7 @@ Here are some snapshots of **Multichain Super Wallet** in action:
 
 <div align="center">
   <img width="45%" alt="Screenshot 2025-03-01 at 2 50 00 PM" src="https://github.com/user-attachments/assets/851ef649-37e4-42b6-baa6-7ea533e3dea0" />
-<img width="45%" alt="Screenshot 2025-03-01 at 9 28 47 AM" src="https://github.com/user-attachments/assets/ff7c6313-20a9-42db-83dc-47908db5ee9d" />
+<img width="45%" height="80%" alt="Screenshot 2025-03-01 at 9 28 47 AM" src="https://github.com/user-attachments/assets/ff7c6313-20a9-42db-83dc-47908db5ee9d" />
 </div>
 
 
