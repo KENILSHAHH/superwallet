@@ -1,6 +1,6 @@
-# 🌍💰  SuperWallet – SuperWallet for Super Chains
+#   SuperWallet – SuperWallet for Super Chains
 
-🚀 **ETHDenver Hackathon Project** | ✨ Built with **Superchain Interoperability Protocol** 
+**ETHDenver Hackathon Project** | ✨ Built with **Superchain Interoperability Mechanism,** 
 
 
 ## 🛠 Overview
@@ -68,14 +68,16 @@ The app will be live at: [http://localhost:3000](http://localhost:3000) 🚀
 
 Here are some snapshots of **Multichain Super Wallet** in action:
 
-<div align="center">
-  <img src="/path-to-image1.png" alt="Demo Screenshot 1" width="45%">
-  <img src="/path-to-image2.png" alt="Demo Screenshot 2" width="45%">
-</div>
 
 <div align="center">
-  <img src="/path-to-image3.png" alt="Demo Screenshot 3" width="45%">
-  <img src="/path-to-image4.png" alt="Demo Screenshot 4" width="45%">
+  <img width="45%" alt="Screenshot 2025-03-01 at 2 50 00 PM" src="https://github.com/user-attachments/assets/851ef649-37e4-42b6-baa6-7ea533e3dea0" />
+<img width="45%" alt="Screenshot 2025-03-01 at 9 28 47 AM" src="https://github.com/user-attachments/assets/ff7c6313-20a9-42db-83dc-47908db5ee9d" />
+</div>
+
+
+<div align="center">
+  <img width="45%" alt="Screenshot 2025-03-01 at 9 29 29 AM" src="https://github.com/user-attachments/assets/55b60cb2-1bc2-4100-b416-757eadb9390c" />
+ <img width="45%" alt="Screenshot 2025-03-01 at 9 31 50 AM" src="https://github.com/user-attachments/assets/1eaab8fd-6aa0-4948-af8a-ad9a4bf4e03e" />
 </div>
 
 ---
